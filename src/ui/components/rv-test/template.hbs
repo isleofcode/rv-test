@@ -1,1 +1,11 @@
 <div><h1>Welcome to Glimmer!</h1></div>
+
+{{#if data.name}}
+  <h4>Helloooooo {{data.name}}</h4>
+{{else}}
+  <h4>Say yo' name, say yo' name</h4>
+{{/if}}
+
+{{#if data.body}}
+  <p>{{data.body}}</p>
+{{/if}}
