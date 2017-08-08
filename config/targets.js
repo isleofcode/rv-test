@@ -4,6 +4,7 @@ let browsers = [
   'last 2 Chrome versions',
   'last 2 Firefox versions',
   'last 2 Safari versions',
+  'Chrome 23' // matches APIs available to r-v's phantom proc
 ];
 
 if (process.env.EMBER_ENV === 'test') {
