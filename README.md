@@ -1,34 +1,49 @@
 # rv-test
 
-This README outlines the details of collaborating on this Glimmer application.
-A short introduction of this app could easily go here.
+## Usage
 
-## Prerequisites
+- In a Node.js REPL, start a websocket:
 
-You will need the following things properly installed on your computer.
+```javascript
+const WebSocket = require('ws');
+let url = 'file:///path/to/built/glimmer/index.html'
+let socket = new WebSocket.Server({
+  perMessageDeflate: false,
+  port: 8080
+});
+```
+- Load up a renderer:
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Yarn](https://yarnpkg.com/en/)
-* [Ember CLI](https://ember-cli.com/)
+```javascript
+const { Renderer } = require('render-vendor');
+Renderer.load(url);
+```
 
-## Installation
+- Find & render your page's HTML:
 
-* `git clone <repository-url>` this repository
-* `cd rv-test`
-* `yarn`
+```javascript
+let page = Renderer.find(url);
 
-## Running / Development
+page.render().then((data) => console.log(data));
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+- Set a name & render to PDF:
 
-### Building
+```javascript
+socket.clients.forEach((ws) => ws.send(JSON.stringify({
+  name: 'Ember Night'
+})));
 
-* `ember build` (development)
-* `ember build --environment production` (production)
+page.render({ filename: './rv-with-name.pdf' });
+```
 
-## Further Reading / Useful Links
+- Set all data & render to PNG:
 
-* [glimmerjs](http://github.com/tildeio/glimmer/)
-* [ember-cli](https://ember-cli.com/)
+```javascript
+socket.clients.forEach((ws) => ws.send({
+  name: 'Ember Night',
+  body: '<img src="http://lorempixel.com/400/200">'
+}));
+
+page.render({ filename: './rv-with-img.png' });
+```
